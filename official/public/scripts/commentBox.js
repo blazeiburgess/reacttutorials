@@ -1,9 +1,14 @@
+var data = [
+  {id: 1, author: "Pete Hunt", text: "This is a comment"},
+  {id: 2, author: "Jordan Walke", text: "This is another comment"}
+];
+
 var CommentBox = React.createClass({
   render: function () {
     return (
       <div className="commentBox">
 	<h1>Comments</h1>
-	<CommentList />
+	<CommentList data={this.props.data} />
 	<CommentForm />
       </div>
     )
@@ -12,11 +17,21 @@ var CommentBox = React.createClass({
 
 var CommentList = React.createClass({
   render: function () {
+    // this variable is rendered in the top functions return statement as a 
+    // variable being passed through
+    var commentNodes = this.props.data.map(function(comment) {
+      return (
+	<Comment author={comment.author} key={comment.id}>
+	  {comment.text}
+	</Comment> 
+      )
+    });
+    // this bit actually gets rendered
     return (
-      <div className="commentList">
-	<Comment author="Pete Hunt">This is the first comment</Comment>
-	<Comment author="Jordan Walke">This is another comment</Comment>
-      </div>
+	<div className="commentList">
+	  {commentNodes}
+	</div>
+      
     )
   }
 });
@@ -53,6 +68,6 @@ var Comment = React.createClass({
 });
 
 ReactDOM.render(
-  <CommentBox />,
+  <CommentBox data={data} />,
   document.getElementById('content')
 );
