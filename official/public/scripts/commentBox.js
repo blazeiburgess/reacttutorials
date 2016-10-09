@@ -60,9 +60,18 @@ var CommentForm = React.createClass({
   handleTextChange: function (e) {
     this.setState({text: e.target.value});
   },
+  handleSubmit: function (e) {
+    e.preventDefault();
+    var author = this.state.author.trim();
+    var text = this.state.text.trim();
+    if (!text || !author) {
+      return;
+    }
+    this.setState({author: '', text: ''})
+  },
   render: function () {
     return (
-      <form className="commentForm">
+      <form className="commentForm" onSubmit={this.handleSubmit}>
 	<input 
 	  type="text"  
 	  placeholder="You name" 
@@ -93,10 +102,10 @@ var Comment = React.createClass({
   render: function () { 
     return (
 	<div className="comment">
-	<h2 className="commentAuthor">
-	{ this.props.author }
-	</h2>
-	<span dangerouslySetInnerHTML={this.rawMarkup()} />
+	  <h2 className="commentAuthor">
+	    { this.props.author }
+	  </h2>
+	  <span dangerouslySetInnerHTML={this.rawMarkup()} />
 	</div>
 	)
   }
