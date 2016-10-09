@@ -2,14 +2,26 @@ var CommentBox = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
+  componentDidMount: function () {
+    $.ajax({
+      url: this.props.url,	
+      dataType: 'json', 
+      success: function (data, textStatus, jqXHR) {
+	this.setState({data: data});
+      }.bind(this),
+      error: function (jqXHR, textStatus, errorThrown) {
+	console.error(this.props.url, textStatus, errorThrown.toString());
+      }.bind(this)
+    });
+  },
   render: function () {
     return (
-      <div className="commentBox">
-	<h1>Comments</h1>
-	<CommentList data={this.state.data} />
-	<CommentForm />
-      </div>
-    )
+	<div className="commentBox">
+	  <h1>Comments</h1>
+	  <CommentList data={this.state.data} />
+	  <CommentForm />
+	</div>
+	)
   }
 });
 
@@ -19,28 +31,28 @@ var CommentList = React.createClass({
     // variable being passed through
     var commentNodes = this.props.data.map(function(comment) {
       return (
-	<Comment author={comment.author} key={comment.id}>
+	  <Comment author={comment.author} key={comment.id}>
 	  {comment.text}
-	</Comment> 
-      )
+	  </Comment> 
+	  )
     });
     // this bit actually gets rendered
     return (
 	<div className="commentList">
-	  {commentNodes}
+	{commentNodes}
 	</div>
-      
-    )
+
+	)
   }
 });
 
 var CommentForm = React.createClass({
   render: function () {
     return (
-      <div className="commentForm">
+	<div className="commentForm">
 	Hello, world! I am a CommentForm.
-      </div>
-    )
+	</div>
+	)
   }
 });
 
@@ -55,17 +67,17 @@ var Comment = React.createClass({
   },
   render: function () { 
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-	  { this.props.author }
+	<div className="comment">
+	<h2 className="commentAuthor">
+	{ this.props.author }
 	</h2>
 	<span dangerouslySetInnerHTML={this.rawMarkup()} />
-      </div>
-    )
+	</div>
+	)
   }
 });
 
 ReactDOM.render(
-  <CommentBox url='/api/comments' />,
-  document.getElementById('content')
-);
+    <CommentBox url='/api/comments' />,
+    document.getElementById('content')
+    );
