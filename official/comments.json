@@ -1,3 +1,5 @@
 [
-  {"id": 1, "author": "Pete Hunt", "text": "This is a comment" }
+  {"id": 1, "author": "Pete Hunt", "text": "This is a comment"},
+  {"id": 2, "author": "Celine", "text": "Testing a second comment"},
+  {"id": 3, "author": "Polling test", "text": "This is to test polling"}
 ]
