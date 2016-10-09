@@ -12,7 +12,19 @@ var CommentBox = React.createClass({
     });
   },
   handleCommentSubmit: function (comment) {
-    return;
+    console.log(comment);
+    $.ajax({
+      url: this.props.url,
+      type: 'POST',
+      dataType: 'json',
+      data: comment,
+      success: function (data, textStatus, jqXHR) {
+        this.setState({data: data})
+      }.bind(this),
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error(this.props.url, textStatus, errorThrown.toString());
+      }.bind(this)
+    });
   },
   getInitialState: function() {
     return {data: []};
@@ -80,7 +92,7 @@ var CommentForm = React.createClass({
 	  type="text"  
 	  placeholder="You name" 
 	  value={this.state.author} 
-	  onChange={this.hndleAuthorChange} 
+	  onChange={this.handleAuthorChange} 
 	/>
 	<input 
 	  type="text" 
@@ -116,6 +128,6 @@ var Comment = React.createClass({
 });
 
 ReactDOM.render(
-    <CommentBox url='/api/comments' pollInterval={2000} />,
+    <CommentBox url='/api/comments' pollInterval={200000} />,
     document.getElementById('content')
     );
